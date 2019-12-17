@@ -3,7 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoSample.Domain", "MongoSample.Domain\MongoSample.Domain.csproj", "{63E79619-3333-4409-B916-158934341ED4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoSample.Domain.Tests", "MongoSample.Domain.Tests\MongoSample.Domain.Tests.csproj", "{6062234B-76AA-4733-9BFF-5082B36A112D}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{63E79619-3333-4409-B916-158934341ED4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63E79619-3333-4409-B916-158934341ED4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63E79619-3333-4409-B916-158934341ED4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63E79619-3333-4409-B916-158934341ED4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6062234B-76AA-4733-9BFF-5082B36A112D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6062234B-76AA-4733-9BFF-5082B36A112D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6062234B-76AA-4733-9BFF-5082B36A112D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6062234B-76AA-4733-9BFF-5082B36A112D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
