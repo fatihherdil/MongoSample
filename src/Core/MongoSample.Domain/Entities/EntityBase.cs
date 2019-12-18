@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using MongoSample.Domain.Interfaces;
 
@@ -11,5 +8,8 @@ namespace MongoSample.Domain.Entities
     {
         [BsonId]
         public ObjectId Id { get; set; }
+        public bool IsNull { get; set; }
+
+        public abstract IEntity GetNullInstance();
     }
 }

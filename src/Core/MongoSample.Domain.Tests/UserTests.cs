@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using MongoSample.Domain.Entities;
 using NUnit.Framework;
 
@@ -17,6 +15,16 @@ namespace MongoSample.Domain.Tests
             {
                 user.Password = "Test";
             });
+        } 
+        
+        [Test]
+        public void User_Nullable_Test()
+        {
+            var user = new User().GetNullInstance();
+            Assert.IsTrue(user.IsNull);
+
+            user = new User();
+            Assert.IsFalse(user.IsNull);
         }
     }
 }

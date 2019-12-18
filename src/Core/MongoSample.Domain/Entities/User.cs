@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Security.Cryptography;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using MongoSample.Domain.Interfaces;
 
 namespace MongoSample.Domain.Entities
 {
@@ -23,6 +25,19 @@ namespace MongoSample.Domain.Entities
 
         public string Name { get; set; }
         public string Surname { get; set; }
+
+        public override IEntity GetNullInstance()
+        {
+            return new User
+            {
+                Email = string.Empty,
+                Id = ObjectId.Empty,
+                IsNull = true,
+                Name = string.Empty,
+                Surname = string.Empty,
+                _password = string.Empty
+            };
+        }
 
         protected string GetHashedPassword(string password)
         {
