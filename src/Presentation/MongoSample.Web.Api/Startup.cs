@@ -11,7 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MongoSample.Domain.Exceptions;
 using MongoSample.Infrastructure.Logging.Providers;
+using MongoSample.Persistence.Exceptions;
 
 namespace MongoSample.Web.Api
 {
@@ -51,7 +53,7 @@ namespace MongoSample.Web.Api
                 endpoints.MapControllers();
             });
 
-            throw new Exception("TEST", new Exception("FILELOG TEST"));
+            throw new MongoConnectionException("TEST", new Exception("FILELOG TEST"));
         }
     }
 }
