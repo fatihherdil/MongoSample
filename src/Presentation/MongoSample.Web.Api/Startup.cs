@@ -1,19 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using MongoSample.Domain.Exceptions;
+using MongoSample.Application.Extensions;
+using MongoSample.Application.Middlewares;
 using MongoSample.Infrastructure.Logging.Providers;
-using MongoSample.Persistence.Exceptions;
+using System.IO.Compression;
 
 namespace MongoSample.Web.Api
 {
@@ -29,7 +24,20 @@ namespace MongoSample.Web.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            #region ResponseCompression
+
+            services.AddResponseCompression(options =>
+            {
+                options.Providers.Add<BrotliCompressionProvider>();
+                options.Providers.Add<GzipCompressionProvider>();
+            });
+            services.Configure<BrotliCompressionProviderOptions>(o => o.Level = CompressionLevel.Optimal);
+            services.Configure<GzipCompressionProviderOptions>(o => o.Level = CompressionLevel.Optimal);
+
+            #endregion
+
             services.AddControllers();
+            services.AddMongoDb(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,6 +49,12 @@ namespace MongoSample.Web.Api
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseMiddleware<ExceptionHandlingMiddleware>();
+            }
+
+            app.UseResponseCompression();
 
             //app.UseHttpsRedirection();
 
@@ -52,8 +66,6 @@ namespace MongoSample.Web.Api
             {
                 endpoints.MapControllers();
             });
-
-            throw new MongoConnectionException("TEST", new Exception("FILELOG TEST"));
         }
     }
 }

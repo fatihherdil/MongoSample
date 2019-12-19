@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MongoSample.Application.Interfaces
+﻿namespace MongoSample.Application.Interfaces
 {
     public interface IResponse
     {

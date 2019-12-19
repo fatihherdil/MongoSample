@@ -1,5 +1,7 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 using MongoSample.Persistence.Exceptions;
+using MongoSample.Persistence.Models;
 using System;
 
 namespace MongoSample.Persistence
@@ -12,10 +14,31 @@ namespace MongoSample.Persistence
         private IMongoDatabase _db;
         private bool _isDisposed = false;
         private bool _isConnectionOpen = false;
-        public MongoContext(string connectionString, string databaseName)
+        /*public MongoContext(string connectionString, string databaseName)
         {
+            if (string.IsNullOrEmpty(connectionString.Trim()))
+                throw new NullReferenceException($"{nameof(connectionString)} Cannot be Null or Empty");
+            if (string.IsNullOrEmpty(databaseName.Trim()))
+                throw new NullReferenceException($"{nameof(databaseName)} Cannot be Null or Empty");
+
             _connectionString = connectionString;
             _databaseName = databaseName;
+
+            OpenConnection();
+            GetDatabase();
+        }*/
+
+        public MongoContext(IOptions<MongoDbOptions> mongoDbOptions)
+        {
+            if (mongoDbOptions.Value == null)
+                throw new ArgumentNullException($"{nameof(mongoDbOptions)} Cannot be Null for MongoContext to Build");
+            if (string.IsNullOrEmpty(mongoDbOptions.Value.ConnectionString.Trim()))
+                throw new NullReferenceException($"{nameof(mongoDbOptions)} {nameof(mongoDbOptions.Value.ConnectionString)} Cannot be Null or Empty");
+            if (string.IsNullOrEmpty(mongoDbOptions.Value.DatabaseName.Trim()))
+                throw new NullReferenceException($"{nameof(mongoDbOptions)} {nameof(mongoDbOptions.Value.DatabaseName)} Cannot be Null or Empty");
+
+            _connectionString = mongoDbOptions.Value.ConnectionString;
+            _databaseName = mongoDbOptions.Value.DatabaseName;
 
             OpenConnection();
             GetDatabase();

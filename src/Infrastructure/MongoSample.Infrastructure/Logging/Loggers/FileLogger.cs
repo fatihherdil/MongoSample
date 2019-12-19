@@ -1,15 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
-using MongoSample.Domain.Exceptions;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
-using System.Threading.Tasks;
-using System.Transactions;
 
 namespace MongoSample.Infrastructure.Logging.Loggers
 {
@@ -41,19 +35,25 @@ namespace MongoSample.Infrastructure.Logging.Loggers
 
             using (var file = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                var readed = string.Empty;
-                using (var reader = new StreamReader(file))
-                    readed = reader.ReadToEnd();
+                //Uncomment for Json.Net
+                //var readed = string.Empty;
+                //using (var reader = new StreamReader(file))
+                //    readed = reader.ReadToEnd();
 
-                logs = JsonConvert.DeserializeObject<List<LogStruct>>(readed);
+                try
+                {
+                    //logs = JsonConvert.DeserializeObject<List<LogStruct>>(readed); //Json.Net
+                    logs = Utf8Json.JsonSerializer.Deserialize<List<LogStruct>>(file); //Utf8Json
+                }
+                catch (Exception) { }
             }
 
             if (logs == null) logs = new List<LogStruct>();
 
             logs.Add(log);
-            var logsSerialized = JsonConvert.SerializeObject(logs);
+            var logsSerialized = Utf8Json.JsonSerializer.ToJsonString(logs); // JsonConvert.SerializeObject(logs); //Json.Net
 
-            using (var writer = File.AppendText(filePath))
+            using (var writer = new StreamWriter(filePath, false))
             {
                 writer.Write(logsSerialized);
                 writer.Flush();
@@ -62,16 +62,19 @@ namespace MongoSample.Infrastructure.Logging.Loggers
 
         }
 
+        #region Log Structure For Json
         [Serializable]
         public class LogStruct
         {
             [JsonProperty(PropertyName = " @timeStamp")]
             public string TimeStamp => DateTime.Now.ToString("G");
-            public string LogLevel { get; }
-            public Event LogEvent { get; }
-            public string Formatted { get; }
-            public LogException FiredException { get; }
-
+            public string LogLevel { get; set; }
+            public Event LogEvent { get; set; }
+            public string Formatted { get; set; }
+            public LogException FiredException { get; set; }
+            public LogStruct()
+            {
+            }
             public LogStruct(LogLevel logLevel, EventId eventId, string formatted, Exception exception)
             {
                 LogLevel = logLevel.ToString();
@@ -91,28 +94,23 @@ namespace MongoSample.Infrastructure.Logging.Loggers
                     Name = name;
                 }
             }
+
             [Serializable]
             public sealed class LogException
             {
-                public string Name { get; }
-                public string StackTrace { get; }
+                public string Name { get; set; }
+                public string StackTrace { get; set; }
                 public string Source { get; set; }
-                public string Message { get; }
-                public LogException InnerException { get; }
-                public IDictionary Data { get; }
+                public string Message { get; set; }
+                public LogException InnerException { get; set; }
+                public IDictionary Data { get; set; }
+                public LogException()
+                {
+
+                }
                 public LogException(Exception e)
                 {
-                    Name = e?.GetType()?.Name;
-                    Message = e.Message;
-                    StackTrace = e.StackTrace;
-                    Source = e.Source;
-                    Data = e.Data;
-                    if (e.InnerException != null)
-                        InnerException = new LogException(e.InnerException);
-                }
-                [JsonConstructor]
-                public LogException(LogException e)
-                {
+                    if (e == null) return;
                     Name = e.GetType().Name;
                     Message = e.Message;
                     StackTrace = e.StackTrace;
@@ -123,5 +121,6 @@ namespace MongoSample.Infrastructure.Logging.Loggers
                 }
             }
         }
+        #endregion
     }
 }

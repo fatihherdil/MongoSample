@@ -1,8 +1,5 @@
 ﻿using MongoSample.Domain.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Net;
-using System.Text;
 
 namespace MongoSample.Domain.Exceptions
 {

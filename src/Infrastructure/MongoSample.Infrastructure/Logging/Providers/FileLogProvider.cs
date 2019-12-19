@@ -1,8 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using MongoSample.Infrastructure.Logging.Loggers;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MongoSample.Infrastructure.Logging.Providers
 {
