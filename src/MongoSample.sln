@@ -13,13 +13,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoSample.Persistence", "Infrastructure\MongoSample.Persistence\MongoSample.Persistence.csproj", "{51383982-CC96-4E18-A140-6A2743FE119B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoSample.Application", "Core\MongoSample.Application\MongoSample.Application.csproj", "{8BCB700E-8C20-4560-BBE6-226FCB46ED59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoSample.Application", "Core\MongoSample.Application\MongoSample.Application.csproj", "{8BCB700E-8C20-4560-BBE6-226FCB46ED59}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{DD6DF862-EF1B-4853-A205-BEB452AEEE5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoSample.Web.Api", "Presentation\MongoSample.Web.Api\MongoSample.Web.Api.csproj", "{6EFAF5DC-36BA-46D7-935E-4C96738E7555}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoSample.Web.Api", "Presentation\MongoSample.Web.Api\MongoSample.Web.Api.csproj", "{6EFAF5DC-36BA-46D7-935E-4C96738E7555}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MongoSample.Infrastructure", "Infrastructure\MongoSample.Infrastructure\MongoSample.Infrastructure.csproj", "{29E992FB-8A76-428D-9FD1-D97772E9DE42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MongoSample.Infrastructure", "Infrastructure\MongoSample.Infrastructure\MongoSample.Infrastructure.csproj", "{29E992FB-8A76-428D-9FD1-D97772E9DE42}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DC96DD3C-9AFE-4E26-BAF7-6BDAEC41F23B}"
+	ProjectSection(SolutionItems) = preProject
+		Solution Files\docker-compose.yaml = Solution Files\docker-compose.yaml
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

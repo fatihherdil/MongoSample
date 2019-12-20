@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using MongoSample.Application.Response;
+using MongoSample.Application.Responses;
 using MongoSample.Domain.Exceptions;
 using Utf8Json;
 

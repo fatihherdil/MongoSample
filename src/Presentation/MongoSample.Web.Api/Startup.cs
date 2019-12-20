@@ -6,7 +6,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MongoSample.Application.Extensions;
+using MongoSample.Application.Interfaces;
 using MongoSample.Application.Middlewares;
+using MongoSample.Application.Repositories;
+using MongoSample.Application.Resolvers;
+using MongoSample.Domain.Entities;
 using MongoSample.Infrastructure.Logging.Providers;
 using System.IO.Compression;
 
@@ -36,8 +40,13 @@ namespace MongoSample.Web.Api
 
             #endregion
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options=>
+            {
+                options.SerializerSettings.ContractResolver = new EntityContractResolver();
+                options.UseCamelCasing(true);
+            });
             services.AddMongoDb(Configuration);
+            services.AddTransient<IMongoRepository<User>, UserRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,6 +75,7 @@ namespace MongoSample.Web.Api
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

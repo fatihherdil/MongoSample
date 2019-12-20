@@ -1,6 +1,6 @@
 ﻿using MongoSample.Application.Abstraction;
 
-namespace MongoSample.Application.Response
+namespace MongoSample.Application.Responses
 {
     public class DefaultResponse : BaseResponse
     {

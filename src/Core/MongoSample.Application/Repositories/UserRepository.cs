@@ -1,14 +1,12 @@
 ﻿using MongoSample.Domain.Entities;
 using MongoSample.Persistence;
 
-namespace MongoSample.Application.Repository
+namespace MongoSample.Application.Repositories
 {
-    public class UserRepository : Repository<User>
+    public class UserRepository : MongoRepositoryBase<User>
     {
         public UserRepository(MongoContext context) : base(context)
         {
         }
-
-
     }
 }

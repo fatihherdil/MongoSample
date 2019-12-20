@@ -4,7 +4,8 @@ namespace MongoSample.Application.Abstraction
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class ApiControllerBase
+    [Produces("application/json")]
+    public class ApiControllerBase : Controller
     {
     }
 }

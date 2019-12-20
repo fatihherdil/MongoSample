@@ -6,9 +6,11 @@ using MongoSample.Domain.Interfaces;
 
 namespace MongoSample.Domain.Entities
 {
+    [BsonIgnoreExtraElements]
     public class User : EntityBase
     {
         private string _password;
+
         [BsonRequired]
         public string Email { get; set; }
         [BsonRequired]

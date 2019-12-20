@@ -1,7 +1,7 @@
 ﻿using MongoSample.Application.Abstraction;
 using System.Net;
 
-namespace MongoSample.Application.Response
+namespace MongoSample.Application.Responses
 {
     public class ErrorResponse : BaseResponse
     {
