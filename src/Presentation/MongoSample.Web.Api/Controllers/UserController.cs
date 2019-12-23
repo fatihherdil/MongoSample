@@ -69,12 +69,6 @@ namespace MongoSample.Web.Api.Controllers
 
             var Id = id["id"].Trim();
             return await DeleteUser(Id);
-
-            ObjectId objId = ObjectId.Empty;
-            if (!ObjectId.TryParse(Id, out objId)) throw new FormatException($"{nameof(id)} is in Incorrect Format For ObjectId(MongoDb)");
-            if (objId == ObjectId.Empty) throw new ArgumentException($"{nameof(id)} Cannot Be Null Or Empty");
-
-            return Json(await _userRepository.DeleteByIdAsync(objId));
         }
 
     }
