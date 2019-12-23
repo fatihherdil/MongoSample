@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
-using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Driver.Core.Clusters;
 using MongoSample.Persistence.Exceptions;
 using MongoSample.Persistence.Models;
 using System;
@@ -16,27 +14,31 @@ namespace MongoSample.Persistence
         private IMongoDatabase _db;
         private bool _isDisposed = false;
         private bool _isConnectionOpen = false;
+        /*public MongoContext(string connectionString, string databaseName)
+        {
+            if (string.IsNullOrEmpty(connectionString.Trim()))
+                throw new NullReferenceException($"{nameof(connectionString)} Cannot be Null or Empty");
+            if (string.IsNullOrEmpty(databaseName.Trim()))
+                throw new NullReferenceException($"{nameof(databaseName)} Cannot be Null or Empty");
+
+            _connectionString = connectionString;
+            _databaseName = databaseName;
+
+            OpenConnection();
+            GetDatabase();
+        }*/
 
         public MongoContext(IOptions<MongoDbOptions> mongoDbOptions)
         {
             if (mongoDbOptions.Value == null)
                 throw new ArgumentNullException($"{nameof(mongoDbOptions)} Cannot be Null for MongoContext to Build");
-
             if (string.IsNullOrEmpty(mongoDbOptions.Value.ConnectionString.Trim()))
-                throw new NullReferenceException($"{nameof(mongoDbOptions)}, {nameof(mongoDbOptions.Value.ConnectionString)} Cannot be Null or Empty");
+                throw new NullReferenceException($"{nameof(mongoDbOptions)} {nameof(mongoDbOptions.Value.ConnectionString)} Cannot be Null or Empty");
+            if (string.IsNullOrEmpty(mongoDbOptions.Value.DatabaseName.Trim()))
+                throw new NullReferenceException($"{nameof(mongoDbOptions)} {nameof(mongoDbOptions.Value.DatabaseName)} Cannot be Null or Empty");
 
-            var mongoUrlBuilder = new MongoUrlBuilder(mongoDbOptions.Value.ConnectionString);
-
-            if (string.IsNullOrEmpty(mongoUrlBuilder.DatabaseName.Trim()))
-                if (string.IsNullOrEmpty(mongoDbOptions.Value.DatabaseName.Trim()))
-                    throw new NullReferenceException($"{nameof(mongoDbOptions)} {nameof(mongoDbOptions.Value.DatabaseName)} Cannot be Null or Empty");
-                else
-                    mongoUrlBuilder.DatabaseName = mongoDbOptions.Value.DatabaseName;
-
-            var mongoUrl = mongoUrlBuilder.ToMongoUrl();
-
-            _connectionString = mongoUrl.Url;
-            _databaseName = mongoUrl.DatabaseName;
+            _connectionString = mongoDbOptions.Value.ConnectionString;
+            _databaseName = mongoDbOptions.Value.DatabaseName;
 
             OpenConnection();
             GetDatabase();
@@ -48,8 +50,7 @@ namespace MongoSample.Persistence
             try
             {
                 _client = new MongoClient(_connectionString);
-                _client.ListDatabaseNames();
-                _isConnectionOpen = _client.Cluster.Description.State == ClusterState.Connected;
+                _isConnectionOpen = true;
             }
             catch (Exception e)
             {
@@ -70,7 +71,6 @@ namespace MongoSample.Persistence
             try
             {
                 var db = _client.GetDatabase(_databaseName);
-                _db.RunCommand((Command<BsonDocument>)"{ping:1}");
                 _db = db;
                 return db;
             }
