@@ -49,7 +49,6 @@ namespace MongoSample.Persistence
             CheckDisposed();
             try
             {
-                var mongoSettings = MongoClientSettings.FromUrl(_mongoUrl);
                 _client = new MongoClient(_mongoUrl);
                 _client.ListDatabaseNames();
                 _isConnectionOpen = _client.Cluster.Description.State == ClusterState.Connected;
