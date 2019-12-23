@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MongoSample.Application;
 using MongoSample.Application.Extensions;
 using MongoSample.Application.Interfaces;
 using MongoSample.Application.Middlewares;
@@ -46,6 +47,7 @@ namespace MongoSample.Web.Api
                 options.UseCamelCasing(true);
             });
             services.AddMongoDb(Configuration);
+            services.AddScoped<LoginManager>();
             services.AddTransient<IMongoRepository<User>, UserRepository>();
         }
 

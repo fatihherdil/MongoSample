@@ -4,6 +4,7 @@ using MongoDB.Driver;
 using MongoSample.Application.Abstraction;
 using MongoSample.Application.Interfaces;
 using MongoSample.Application.Models;
+using MongoSample.Application.Responses;
 using MongoSample.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace MongoSample.Web.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            return Json((await _userRepository.GetAllAsync()).ToEnumerable());
+            return Json(new DefaultResponse((await _userRepository.GetAllAsync()).ToEnumerable()));
         }
 
         [HttpPost("adduser")]
@@ -31,7 +32,7 @@ namespace MongoSample.Web.Api.Controllers
         {
             if (!ModelState.IsValid) throw new ArgumentException($"{nameof(user)} is Invalid");
             var u = await _userRepository.AddAsync(user);
-            return Json(u);
+            return Json(new DefaultResponse(System.Net.HttpStatusCode.Created, u));
         }
 
         [HttpPost("update")]
@@ -46,7 +47,7 @@ namespace MongoSample.Web.Api.Controllers
 
             var u = _userRepository.UpdateAsync(user.User);
 
-            return Json(user.User);
+            return Json(new DefaultResponse(System.Net.HttpStatusCode.NoContent, user.User));
         }
 
         [HttpGet("delete/{id}")]
@@ -57,7 +58,7 @@ namespace MongoSample.Web.Api.Controllers
             if (!ObjectId.TryParse(id, out objId)) throw new FormatException($"{nameof(id)} is in Incorrect Format For ObjectId(MongoDb)");
             if (objId == ObjectId.Empty) throw new ArgumentException($"{nameof(id)} Cannot Be Null Or Empty");
 
-            return Json(await _userRepository.DeleteByIdAsync(objId));
+            return Json(new DefaultResponse(System.Net.HttpStatusCode.NoContent, await _userRepository.DeleteByIdAsync(objId)));
         }
 
         [HttpPost("delete")]
