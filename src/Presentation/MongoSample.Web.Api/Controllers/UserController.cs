@@ -39,8 +39,8 @@ namespace MongoSample.Web.Api.Controllers
         {
             if (!ModelState.IsValid) throw new ArgumentException($"{nameof(user)} is Invalid");
             ObjectId id = ObjectId.Empty;
-            if (!ObjectId.TryParse(user.OldId, out id)) throw new FormatException($"{nameof(user.OldId)} is in Incorrect Format For ObjectId(MongoDb)");
-            if (id == ObjectId.Empty) throw new ArgumentException($"{nameof(user.OldId)} Cannot Be Null Or Empty");
+            if (!ObjectId.TryParse(user.Id, out id)) throw new FormatException($"{nameof(user.Id)} is in Incorrect Format For ObjectId(MongoDb)");
+            if (id == ObjectId.Empty) throw new ArgumentException($"{nameof(user.Id)} Cannot Be Null Or Empty");
 
             user.User.Id = id;
 
