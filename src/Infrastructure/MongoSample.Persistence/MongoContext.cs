@@ -5,6 +5,7 @@ using MongoDB.Driver.Core.Clusters;
 using MongoSample.Persistence.Exceptions;
 using MongoSample.Persistence.Models;
 using System;
+using System.Linq;
 
 namespace MongoSample.Persistence
 {
@@ -42,6 +43,7 @@ namespace MongoSample.Persistence
 
             OpenConnection();
             GetDatabase();
+            FillCollections();
         }
 
         protected void OpenConnection()
@@ -60,7 +62,7 @@ namespace MongoSample.Persistence
             }
         }
 
-        public IMongoDatabase GetDatabase()
+        protected IMongoDatabase GetDatabase()
         {
             CheckDisposed();
             if (!_isConnectionOpen || _client == null)
@@ -99,6 +101,21 @@ namespace MongoSample.Persistence
             catch (Exception e)
             {
                 throw new MongoCollectionException("Cannot Retrieve Collection", e);
+            }
+        }
+
+        protected void FillCollections()
+        {
+            var props = GetType().GetProperties().Where(p => p.PropertyType.GetGenericTypeDefinition() == typeof(IMongoCollection<>));
+            foreach (var prop in props)
+            {
+                var entityType = prop.PropertyType.GenericTypeArguments.FirstOrDefault();
+                if (entityType == null) continue;
+
+                var getCollectionMethod = typeof(MongoContext).GetMethod("GetCollection");
+                var getCollectionGeneric = getCollectionMethod.MakeGenericMethod(entityType);
+                prop.SetValue(this, getCollectionGeneric.Invoke(this, null));
+
             }
         }
 
