@@ -12,23 +12,20 @@ namespace MongoSample.Domain.Entities
     {
         private string _password;
 
-        [BsonRequired]
+        [BsonRequired] 
         public string Email { get; set; }
         [BsonRequired]
         public string Password
         {
-            get
-            {
-                if (Id == null || Id == ObjectId.Empty)
-                    return GetHashedPassword(_password);
-                else
-                    return _password;
-            }
+            get => _password;
             set
             {
                 if (string.IsNullOrEmpty(value.Trim()))
                     throw new NullReferenceException($"{nameof(Password)} cannot be Empty or Null");
-                _password = value;
+                if (Id == null || Id == ObjectId.Empty)
+                    _password = GetHashedPassword(value);
+                else
+                    _password = value;
             }
         }
 
@@ -70,7 +67,6 @@ namespace MongoSample.Domain.Entities
             SHA1 sha = SHA1.Create();
 
             return Convert.ToBase64String(sha.ComputeHash(saltedPassword));
-
         }
     }
 }
