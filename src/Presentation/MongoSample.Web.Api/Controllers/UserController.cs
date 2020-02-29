@@ -17,8 +17,7 @@ namespace MongoSample.Web.Api.Controllers
         private readonly IMongoRepository<User> _userRepository;
         public UserController(IMongoRepository<User> userRepository)
         {
-            if (userRepository == null) throw new ArgumentException($"Api Cannot be Build without Repository({nameof(userRepository)})");
-            _userRepository = userRepository;
+            _userRepository = userRepository ?? throw new ArgumentException($"Api Cannot be Build without Repository({nameof(userRepository)})");
         }
 
         [HttpGet]

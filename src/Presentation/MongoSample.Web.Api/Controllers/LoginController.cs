@@ -14,7 +14,7 @@ namespace MongoSample.Web.Api.Controllers
         private readonly LoginManager _loginManager;
         public LoginController(LoginManager loginManager)
         {
-            _loginManager = loginManager;
+            _loginManager = loginManager ?? throw new ArgumentNullException($"Api Cannot be Build without Repository({nameof(loginManager)})");
         }
 
         [HttpPost]
